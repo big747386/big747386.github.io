@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.7.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Phil Storrs PC Hardware bookThe DOS Computer and its Memory电脑内存可以按构成的硬件或使用方式分类，按硬件类型分：RAM - 随机读写ROM - 只读内存 按使用方式分：Base MemoryExTended memoryExPanded (EMS) memoryXMS memoryVirtual memory RAM提供一个供DOS和其他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2019/09/03/Phil Storrs PC Hardware book/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Phil Storrs PC Hardware bookThe DOS Computer and its Memory电脑内存可以按构成的硬件或使用方式分类，按硬件类型分：RAM - 随机读写ROM - 只读内存 按使用方式分：Base MemoryExTended memoryExPanded (EMS) memoryXMS memoryVirtual memory RAM提供一个供DOS和其他">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-09-05T09:53:40.799Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="Phil Storrs PC Hardware bookThe DOS Computer and its Memory电脑内存可以按构成的硬件或使用方式分类，按硬件类型分：RAM - 随机读写ROM - 只读内存 按使用方式分：Base MemoryExTended memoryExPanded (EMS) memoryXMS memoryVirtual memory RAM提供一个供DOS和其他">
+  <link rel="canonical" href="http://yoursite.com/2019/09/03/Phil Storrs PC Hardware book/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/03/Phil Storrs PC Hardware book/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-09-03 10:11:10" itemprop="dateCreated datePublished" datetime="2019-09-03T10:11:10+08:00">2019-09-03</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-09-05 17:53:40" itemprop="dateModified" datetime="2019-09-05T17:53:40+08:00">2019-09-05</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Phil-Storrs-PC-Hardware-book"><a href="#Phil-Storrs-PC-Hardware-book" class="headerlink" title="Phil Storrs PC Hardware book"></a>Phil Storrs PC Hardware book</h2><h3 id="The-DOS-Computer-and-its-Memory"><a href="#The-DOS-Computer-and-its-Memory" class="headerlink" title="The DOS Computer and its Memory"></a>The DOS Computer and its Memory</h3><p>电脑内存可以按构成的硬件或使用方式分类，<br>按硬件类型分：<br>RAM - 随机读写<br>ROM - 只读内存</p>
+<p>按使用方式分：<br>Base Memory<br>ExTended memory<br>ExPanded (EMS) memory<br>XMS memory<br>Virtual memory</p>
+<p>RAM提供一个供DOS和其他软件执行其操作的区域，这块内存可以被读取，所以程序代码可以反复地被加载执行，他也同样可以被写入，所以程序得以保存修改并持久化到硬盘上。RAM是volatile内存，这意味着断电时内容会丢失。<br>ROM（只读内存）是为操作系统和其他硬件保留的，它保存了操作系统和其他软件用于管理资源的指令，他不可以被改写，因此它也不用于工作区域。最常见的例子就是BIOS了。</p>
+<p>Memory allocations：<br>Base Memory 这是DOS最初的１MB空间，8080处理器只有20 address lines,它限制了可寻址的区域范围是1M bytes，2^20是1024000<br>Extended Memory是1M bytes以上的内存空间，虽然DOS在默认模式下不能寻址超过1M,80286及以上可以在保护模式下直接寻址该区域。所以被非DOS和最近的DOS系统应用程序所使用。Extended Memory可以被重新映射成expanded memory, XMS memory, and RAM (non-physical) disk drives。</p>
+<p>Expanded Memory<br>Expanded (EMS) memory is accessed by mapping 64K bytes of memory (called a page) from a non-DOS addressable area into a specific memory address in the Reserved Memory Area. The 64K byte area of the reserved memory used to map this extra memory into, is called the Page Frame. The Page Frame must lay between the top of the Video BIOS Extension ROM at C7FFF, and the start of the System BIOS ROM at F0000. The presence of other BIOS Extension ROMs and RAM on specialized I/O cards, must be taken into account when allocating the Page Frame. With older versions of DOS, EMS Memory is managed by a device driver installed from the config.sys file at boot-up. The EMS Manager makes memory available to EMS-aware products that use this memory for temporary work and data storage.</p>
+<p>The technique for swapping pages of memory above and below the 1M byte limit is called bank switching and up to 32M byte of memory can be addressed this way.<br>The first implementation of EMS Memory was the Above Board from Intel and it provided EMS memory via a hardware card plugged into a Bus Slot in PC and PC/XT computers. When the AT computer was released the Extended memory it provided was of no use to DOS so schemes were devised to manage this memory as Expanded Memory, rather than Extended Memory. Later versions of DOS have much more extensive Memory Management provisions and the device driver EMM386 can provide Expanded Memory by making some Extended memory available for this purpose and switching it in and out of the Page Frame as applications requests it.</p>
+<p>EMS本来是为有20位地址总线限制的8088处理器提供更多内存的方法，现在我们的现代操作系统不再需要EMS了，但是一些老的程序也许不能利用Extended Memory,需要一些EMS内存吗，DOS中的内存优化器Memmaker给了我们允许一些EMS内存的选项。</p>
+<table>
+<thead>
+<tr>
+<th>　Expanded Memory</th>
+<th style="text-align:center">Extended Memory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>需要内存管理器</td>
+<td style="text-align:center">不需要</td>
+</tr>
+<tr>
+<td>需要页框</td>
+<td style="text-align:center">不需要</td>
+</tr>
+<tr>
+<td>CPU实模式</td>
+<td style="text-align:center">保护模式</td>
+</tr>
+<tr>
+<td>DOS可以使用</td>
+<td style="text-align:center">DOS不可以</td>
+</tr>
+<tr>
+<td>8088/86可以使用</td>
+<td style="text-align:center">8088/86不可以</td>
+</tr>
+</tbody>
+</table>
+<p>XMS Memory<br>The eXtended Memory Specification (XMS), developed by Microsoft, allows programs to request memory above the conventional memory area for program storage and use. The DOS device driver that provides XMS Memory is EMM386. Only XMS-aware programs use XMS memory but the Memory Manager can make memory available as either Extended or Expanded memory if an application requires these.</p>
+<p>XMS memory can be allocated from three locations and you will learn more about these soon.<br>(1)Memory recovered from the Reserved Memory area in blocks called Upper Memory Blocks (UMBs).<br>(2)Extended memory in blocks called Extended Memory Blocks (EMBs)<br>(3)The High Memory Area (HMA), a specific 64K byte area in extended memory at address 100000hex .</p>
+<p>Address line A20<br>Address line A20 is the 21st address line and it is this line that selects memory locations above one Meg. XMS memory from the High Memory Area is available due to a bug in the 80286 chip’s emulation of the 8086/8088 processor chip, concerning the A20 address line. The bug was retained in the 80386 for compatibility, but the A20 address line control feature was added to turn the bug on and off.  </p>
+<p>Virtual Memory<br>虚拟内存是一个魔术，它巧妙地组织微处理器、程序和外存之间的合作关系。<br>当一个程序跑起来以后，操作系统为它创建了一个虚拟内存空间让程序自由处理。然后，计算机的真实内存中的一部分就交给了这个魔术操作，这是虚拟内存的核心概念。Using a feature that is an integral part of the 386 and 486 processors, the operating system’s Virtual Memory Manager routine tells the processor to make the real memory that’s being assigned to the program to appear to be at some other address, the virtual address that the program will be using. A “memory mapping” feature in the processor makes the real memory appear to have a different working memory address than its true, real address.<br>This is just a shuffling act, a trick that makes some real memory addresses appear to be, and to work as, some other virtual address. The most important part of virtual memory comes in the next step, when our programs try to use more virtual memory than there is real memory. A program starts out with some of its (large) virtual memory space mapped into part of the computer’s (smaller) real memory. As long as the program is only working with that part of its virtual memory, all goes well. The program is actually using different locations in memory than it thinks it is, but that does not matter. What happens when the program tries to use some of the larger virtual memory that hasn’t been assigned as part of the smaller real memory ?. When that occurs, the Memory Manager consults a Mapping Table and discovers that the program is trying to use an address that doesn’t currently exist. This condition is indicated by what is called a Page Fault.<br>When there is a page fault indicating that a program is trying to use a virtual address that isn’t actively mapped into real memory, a Virtual Memory Support routine swings into action. It temporarily places the program on hold while it deals with the crises. The Memory Manager chooses some part of the virtual memory that is currently in real memory, saves its contents temporarily onto the disk, this process is called swapping out. That part of the real memory is recycled to act as the newly-needed part of the virtual memory. When the swapped-out part of memory is needed again, it’s swapped-in, copied back from the disk. As you can see, the computer’s disk is used as a warehouse to store the parts of the virtual memory that are not currently in use.<br>取决于多方面的因素，虚拟内存可以表现得很平滑，也可能涉及到太多的swapping in and out，以至于浪费很多时间在内存和硬盘的交换上。这个现象叫Thrashing，当它发生时，系统就会变慢。  </p>
+<p>The Base Mermory（基址内存？） original IBM PC/XT 可用的1M的可用空间，可分为两个区域：<br>(1)Conventional Memory: 0x00000 to 0x9FFFF (0 to 640 K byte)<br>(2)Reserved Memory :  memory from 0xA0000 to 0xFFFFF (640 K byte to 1 MB)</p>
+<p>Conventional Memory(也被称作User RAN 或Base Memory)<br>这是最开头的640K bytes 从0x00000 到 0x9FFFF, 这是属于旧版DOS的内存区域，DOS在这里加载自己，驱动通过CONFIG.SYS and AUTOEXEC.BAT安装。DOS同样在这里加载应用程序，　如用户加载常驻程序（resident programs）如记事本等。<br>Conventional Memory是很拥挤的，这是计算机中最拥挤的地方，在配置完DOS，加载完驱动和其他的常驻程序后，大概只剩下400到600K bytes空余内存，可能不够启动一些应用程序，而且即使对于某些的启动的应用程序，有更多的空余空间会更高效。  </p>
+<p>Reserved Memory 这是在640K bytes之上的384K bytes地址，是为系统保留的，用于像Video RAN,System BIOS RAM,及BIOS Extension ROMs及用于网卡、SCSI接口的内存区域。一般来说，这片地址不能被应用程序寻址。稍后再细说这片区域是怎么使用的。  </p>
+<p>Memory above One Meg and DOS<br>CPU（中央处理器）限制了计算机可以使用的最大内存。The Intel 286及现今使用的桌面处理器有两种操作模式，protected mode and real mode.  </p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/08/31/记一次有趣的现象--并发/" rel="next" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/07/@Autowired注解/" rel="prev" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Phil-Storrs-PC-Hardware-book"><span class="nav-number">1.</span> <span class="nav-text">Phil Storrs PC Hardware book</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-DOS-Computer-and-its-Memory"><span class="nav-number">1.1.</span> <span class="nav-text">The DOS Computer and its Memory</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.7.1</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
