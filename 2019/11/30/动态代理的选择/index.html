@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="通过SpringContextUtil实现ApplicationContextAware接口实现ApplicationContextAware接口的回调方法。设置上下文环境时setApplicationContext方法会使private static ApplicationContext applicationContext;为null;然后在SpringContextUtil类上加注解@Ser">
+  <meta name="description" content="Spring使用AOP(面向切面编程)来管理你的应用。而实现代理有两种方式：CGLIB和JDK动态代理。看一段JDK动态代理的demo12345678910111213141516171819202122232425262728293031323334353637383940414243public class MyDynamicProxy &amp;#123;    public static void">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/2019/07/18/SpringContextUtil实现/index.html">
+<meta property="og:url" content="http://yoursite.com/2019/11/30/动态代理的选择/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="通过SpringContextUtil实现ApplicationContextAware接口实现ApplicationContextAware接口的回调方法。设置上下文环境时setApplicationContext方法会使private static ApplicationContext applicationContext;为null;然后在SpringContextUtil类上加注解@Ser">
+<meta property="og:description" content="Spring使用AOP(面向切面编程)来管理你的应用。而实现代理有两种方式：CGLIB和JDK动态代理。看一段JDK动态代理的demo12345678910111213141516171819202122232425262728293031323334353637383940414243public class MyDynamicProxy &amp;#123;    public static void">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-18T14:51:41.212Z">
+<meta property="og:updated_time" content="2019-11-30T15:07:55.642Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
-<meta name="twitter:description" content="通过SpringContextUtil实现ApplicationContextAware接口实现ApplicationContextAware接口的回调方法。设置上下文环境时setApplicationContext方法会使private static ApplicationContext applicationContext;为null;然后在SpringContextUtil类上加注解@Ser">
-  <link rel="canonical" href="http://yoursite.com/2019/07/18/SpringContextUtil实现/">
+<meta name="twitter:description" content="Spring使用AOP(面向切面编程)来管理你的应用。而实现代理有两种方式：CGLIB和JDK动态代理。看一段JDK动态代理的demo12345678910111213141516171819202122232425262728293031323334353637383940414243public class MyDynamicProxy &amp;#123;    public static void">
+  <link rel="canonical" href="http://yoursite.com/2019/11/30/动态代理的选择/">
 
 
 <script id="page-configurations">
@@ -195,7 +195,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/18/SpringContextUtil实现/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/30/动态代理的选择/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -223,7 +223,7 @@
                 
               
 
-              <time title="Created: 2019-07-18 22:47:16 / Modified: 22:51:41" itemprop="dateCreated datePublished" datetime="2019-07-18T22:47:16+08:00">2019-07-18</time>
+              <time title="Created: 2019-11-30 09:59:03 / Modified: 23:07:55" itemprop="dateCreated datePublished" datetime="2019-11-30T09:59:03+08:00">2019-11-30</time>
             </span>
           
             
@@ -242,7 +242,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="通过SpringContextUtil实现ApplicationContextAware接口"><a href="#通过SpringContextUtil实现ApplicationContextAware接口" class="headerlink" title="通过SpringContextUtil实现ApplicationContextAware接口"></a>通过SpringContextUtil实现ApplicationContextAware接口</h2><p>实现ApplicationContextAware接口的回调方法。设置上下文环境时setApplicationContext方法会使private static ApplicationContext applicationContext;为null;<br>然后在SpringContextUtil类上加注解@Service就可以了</p>
+        <p>Spring使用AOP(面向切面编程)来管理你的应用。而实现代理有两种方式：CGLIB和JDK动态代理。<br>看一段JDK动态代理的demo<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyDynamicProxy</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        HelloImp hello = <span class="keyword">new</span> HelloImp();</span><br><span class="line">        MyInvocationHandler handler = <span class="keyword">new</span> MyInvocationHandler(hello);</span><br><span class="line">        Hello proxyHello = (Hello) Proxy.newProxyInstance(HelloImp.class.getClassLoader(),</span><br><span class="line">                HelloImp.class.getInterfaces(), handler);</span><br><span class="line">        proxyHello.sayHello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">sayHello</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloImp</span> <span class="keyword">implements</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyInvocationHandler</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Invoking sayHello"</span>);</span><br><span class="line">        Object result = method.invoke(target, args);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line">上面的例子简单地实现了动态代理的创建和代理操作，以接口为纽带，为被代理目标创建代理对象，这样就可以利用代理对象间接运行调用目标的逻辑，并且实现轻易的拓展。比如这里额外打印了一句话。  </span><br><span class="line">但是这种实现是以接口为中心的，如果本身的系统设计中不需要接口，这样相当于额外增加了限制，因此可以选择另外一种不依赖接口的动态代理方式，cglib;</span><br><span class="line">cglib使用的是创建被代理目标子类的方式。在Spring中，使用哪种方式是由Spring指定的，如果一个目标类实现了一个或多个接口，Spring就会实现JDK动态代理，这促使你更多的采用面向接口的方式编程。如果没有实现接口，就会使用cglib。</span><br><span class="line">当然你也可以强制指定使用cglib动态代理，当然这是有限制的，一是目标类不能是<span class="keyword">final</span>的，二是需要CGLIB2 字节码库。</span><br><span class="line">```xml</span><br><span class="line">&lt;aop:config proxy-target-<span class="class"><span class="keyword">class</span></span>=<span class="string">"true"</span>&gt;</span><br><span class="line">	</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">&lt;/aop:config&gt;</span><br></pre></td></tr></table></figure></p>
+<p>如果是使用@AspectJ注解的话，配置如下</p>
+<pre><code class="xml"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span> <span class="attr">proxy-target-class</span>=<span class="string">"true"</span>/&gt;</span>
+</code></pre>
+<p>spring官方文档传送门：<a href="https://docs.spring.io/spring/docs/2.0.0/reference/aop.html#d0e9015" target="_blank" rel="noopener">https://docs.spring.io/spring/docs/2.0.0/reference/aop.html#d0e9015</a>  </p>
 
     </div>
 
@@ -259,7 +263,7 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/05/31/mergesort协程/" rel="next" title="">
+                <a href="/2019/10/12/ex2/" rel="next" title="">
                   <i class="fa fa-chevron-left"></i> 
                 </a>
               
@@ -268,10 +272,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/07/28/type接口/" rel="prev" title="">
-                   <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -320,8 +320,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过SpringContextUtil实现ApplicationContextAware接口"><span class="nav-number">1.</span> <span class="nav-text">通过SpringContextUtil实现ApplicationContextAware接口</span></a></li></ol></div>
-        
       </div>
       <!--/noindex-->
 
