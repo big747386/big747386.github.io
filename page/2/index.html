@@ -190,7 +190,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/10/Integer和Int/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/面试系列（四）数据库索引/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -204,7 +204,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2019/08/10/Integer和Int/" class="post-title-link" itemprop="url">Untitled</a>
+            <a href="/2019/12/19/面试系列（四）数据库索引/" class="post-title-link" itemprop="url">Untitled</a>
           
         </h1>
 
@@ -219,7 +219,7 @@
                 
               
 
-              <time title="Created: 2019-08-10 11:38:53" itemprop="dateCreated datePublished" datetime="2019-08-10T11:38:53+08:00">2019-08-10</time>
+              <time title="Created: 2019-12-19 11:09:23" itemprop="dateCreated datePublished" datetime="2019-12-19T11:09:23+08:00">2019-12-19</time>
             </span>
           
             
@@ -230,7 +230,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-09-07 14:24:13" itemprop="dateModified" datetime="2019-09-07T14:24:13+08:00">2019-09-07</time>
+                <time title="Modified: 2019-12-20 12:03:13" itemprop="dateModified" datetime="2019-12-20T12:03:13+08:00">2019-12-20</time>
               </span>
             
           
@@ -246,9 +246,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Integer t1 = <span class="number">100</span>, t2 = <span class="number">100</span>, t3 = <span class="number">150</span>, t4 = <span class="number">150</span>;</span><br><span class="line">        System.out.println(t1 == t2);</span><br><span class="line">        System.out.println(t3 == t4);</span><br><span class="line">    &#125;</span><br><span class="line">```  </span><br><span class="line">这四个变量都是Integer这个对象，这里==比较的是是引用而不是值。  </span><br><span class="line">当我们用<span class="keyword">int</span>给Integer赋值的时候，会用到valueOf静态方法，看一下源码：</span><br><span class="line">```java</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns an &#123;<span class="doctag">@code</span> Integer&#125; instance representing the specified</span></span><br><span class="line"><span class="comment">     * &#123;<span class="doctag">@code</span> int&#125; value.  If a new &#123;<span class="doctag">@code</span> Integer&#125; instance is not</span></span><br><span class="line"><span class="comment">     * required, this method should generally be used in preference to</span></span><br><span class="line"><span class="comment">     * the constructor &#123;<span class="doctag">@link</span> #Integer(int)&#125;, as this method is likely</span></span><br><span class="line"><span class="comment">     * to yield significantly better space and time performance by</span></span><br><span class="line"><span class="comment">     * caching frequently requested values.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * This method will always cache values in the range -128 to 127,</span></span><br><span class="line"><span class="comment">     * inclusive, and may cache other values outside of this range.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>  i an &#123;<span class="doctag">@code</span> int&#125; value.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> an &#123;<span class="doctag">@code</span> Integer&#125; instance representing &#123;<span class="doctag">@code</span> i&#125;.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span>  1.5</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">            <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>而IntegerCache是一个静态内部类，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerCache</span> </span>&#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> low = -<span class="number">128</span>;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> high;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> Integer cache[];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> &#123;</span><br><span class="line">            <span class="comment">// high value may be configured by property</span></span><br><span class="line">            <span class="keyword">int</span> h = <span class="number">127</span>;</span><br><span class="line">            String integerCacheHighPropValue =</span><br><span class="line">                sun.misc.VM.getSavedProperty(<span class="string">"java.lang.Integer.IntegerCache.high"</span>);</span><br><span class="line">            <span class="keyword">if</span> (integerCacheHighPropValue != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">int</span> i = parseInt(integerCacheHighPropValue);</span><br><span class="line">                    i = Math.max(i, <span class="number">127</span>);</span><br><span class="line">                    <span class="comment">// Maximum array size is Integer.MAX_VALUE</span></span><br><span class="line">                    h = Math.min(i, Integer.MAX_VALUE - (-low) -<span class="number">1</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span>( NumberFormatException nfe) &#123;</span><br><span class="line">                    <span class="comment">// If the property cannot be parsed into an int, ignore it.</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            high = h;</span><br><span class="line"></span><br><span class="line">            cache = <span class="keyword">new</span> Integer[(high - low) + <span class="number">1</span>];</span><br><span class="line">            <span class="keyword">int</span> j = low;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; cache.length; k++)</span><br><span class="line">                cache[k] = <span class="keyword">new</span> Integer(j++);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// range [-128, 127] must be interned (JLS7 5.1.7)</span></span><br><span class="line">            <span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">IntegerCache</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>可以看到，这里的下限固定在-128，而上限可能会根据配置调整，默认是127，可能是方便调优？</p>
+          <p>数据库常见的索引有哈希表、有序数组、搜索树，此外还有一些跳表等，在此先不赘述。<br>哈希表的通过哈希函数将key的位置确定，因此查找的时间是O(1)，如果有哈希地址一样的，就拉出一个链表。缺点是不能范围查找，因此不适合一般场景，适合只有等值查询的场景，比如KV数据库。　　<br>有序数组在范围查找方面就很优秀,先用二分查找,时间是O(logN),找到以后,可以向右遍历,所以单看范围查询,有序数组是最好的数据结构了,但是如果要插入新的数据,后面的所有数据都要移动,因此只适用于静态数据.<br>二叉搜索树的查询也是O(logN),但是维护这样一个搜索树的时间复杂度也是O(logN),有时需要分裂合并造成的开销也很大.二叉树的搜索效率比多叉树要高,那么为什么要用N叉树呢?<br>因为索引的一部分还是在磁盘里的,读一个数据块还是要花费很长的时间,如果树高太长,要读很多次磁盘,所以尽量保持树高小.这里的N要取决于数据块的大小.<br>以一个InnoDB的整型字段索引为例,N差不多是1200,那么在树高是4的时候,1200^3已经是17亿多了.访问磁盘的次数就只需要三次了.所以,因为N叉树优秀的读写性能和适配磁盘的访问方式,广泛的运用在数据库引擎中.<br>说完索引的的不同数据结构,再来看看具体InnoDB的索引吧.</p>
+<h2 id="InnoDB的索引结构"><a href="#InnoDB的索引结构" class="headerlink" title="InnoDB的索引结构"></a>InnoDB的索引结构</h2><p>InnoDB中每个索引代表一个B+树,为什么不用B树呢,大家都知道B树的每个节点都会存data,而B+树的data只存在叶子节点上,也就是说,B树的每个节点会更大,这样会增加磁盘IO次数,因为N变小了,另外一点是B+树的叶子节点是用指针串起来的,能很好地支持范围查询.<br>这里插播一下InnoDB和MyISAM的区别吧:</p>
+<ul>
+<li>MyISAM不支持事务,InnoDB支持事务</li>
+<li>MyISAN的锁是表极锁,InnoDB支持到行级锁</li>
+<li>MyISAM支持全文类型索引,InnoDB不支持</li>
+<li>MyISAM相对简单，效率上要优于InnoDB</li>
+<li>在读远远多于锁,且不需要使用事务的时候,可以选择MyISAM  </li>
+</ul>
+<p>在说一点结构上的区别,MyISAM的索引和数据是分开存放的,data里是数据的地址,索引放在XX.MYI文件中，数据放在XX.MYD文件中，所以也叫非聚集索引.<br><img src="image/面试四1.png" alt="非聚集索引"><br>InnoDB的data存的就是数据本身,存在一个叫XX.IDB的文件里.也叫聚集索引.<br><img src="image/面试四2.png" alt="聚集索引"><br>说回到InnoDB的索引,我们举个具体的例子:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table T(</span><br><span class="line">id int primary key, </span><br><span class="line">k int not null, </span><br><span class="line">name varchar(16),</span><br><span class="line">index (k))engine=InnoDB;</span><br></pre></td></tr></table></figure></p>
+<p>如果这张表有五条数据,(100,1)(200,2)(300,3)(500,5)(600,6),则两棵树长这个样子:<br><img src="image/面试四3.png" alt="InnoDB索引模型"><br>索引分为主键索引和非主键索引,主键索引里存着整行数据,非主键索引存的是主键的值.<br>主键索引也被称为聚簇索引,非主键索引被称作二级索引.<br>因此如果查询<tr>select <em> from T where id = 2;</em></tr>,即通过主键查询,只需要搜索一棵树就行了.<br>而如果查询select  from T where k = 200,需要先查k索引树,拿到id以后再去主键索引查一遍,这个操作叫做回表.  </p>
+<h2 id="索引维护"><a href="#索引维护" class="headerlink" title="索引维护"></a>索引维护</h2><p>因为B+树需要维护,具体的算法可以参见&lt;数据库系统概念&gt;,总之如果数据页满了,需要分裂,或者数据页的合并,因此我们应该尽量定义自增主键.<br>自增主键 NOT NULL PRIMARY KEY AUTO_INCREMENT,系统会自动按自然数顺序给新的记录赋值,也就是说,每次新增记录都是追加操作,不会引起其他数据的移动,而如果用有业务逻辑的字段做主键,则一般没有顺序,写数据成本较高.<br>另外可以从空间角度考虑,如果有一个字符串类型是逻辑上唯一的,用它做主键是不是也很好呢?其实不是,因为非主键索引存的是主键的值,而bigint做主键也只需8个字节,而字符串类型可能会占用更多的字节.例如,用utf8编码的话,一个汉字占三个字节,英文占一个字节,空间消耗明显更大.<br>当然也是有场景适合用业务字段直接做主键:</p>
+<ul>
+<li>只有一个索引</li>
+<li>该索引必须是唯一索引  </li>
+</ul>
+<p>这是典型的KV场景,这时候直接将这个索引设为主键,避免了回表.</p>
+<h2 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h2><p>如果我们执行select * from T where k between 3 and 5,需要回表两次,而如果执行select ID from T where k between 3 and 5,就只需要在k索引树上查找了,因为索引k已经覆盖了我们的查询需求.<br>由于覆盖索引可以减少树的搜索次数，显著提升查询性能，所以使用覆盖索引是一个常用的性能优化手段.<br>基于上面覆盖索引的说明，我们来讨论一个问题：在一个市民信息表上，<b>是否有必要将身份证号和名字建立联合索引？  </b><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tuser`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`id_card`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`ismale`</span> tinyint(<span class="number">1</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`id_card`</span> (<span class="string">`id_card`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`name_age`</span> (<span class="string">`name`</span>,<span class="string">`age`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span></span><br><span class="line"><span class="string">``</span><span class="string">`  </span></span><br><span class="line"><span class="string">这里一般是对身份证号做一个索引,那么有没有必要对(id_card, name)做一个联合索引呢?  </span></span><br><span class="line"><span class="string">如果有一个高频请求,根据身份证号查名字,这个索引就很有意义了,联合索引可以覆盖请求,不需要回表了.  </span></span><br><span class="line"><span class="string">## 最左前缀原则  </span></span><br><span class="line"><span class="string">比如说,用(name,age)这个索引来分析,</span></span><br><span class="line"><span class="string">![最左前缀](image/面试四4.jpg)  </span></span><br><span class="line"><span class="string">如果我们要找所有叫张三的,可以定位到ID4,然后向右遍历,如果要查的是名字的第一个字叫张的,查询条件是where name like ‘张 %’,也可以用上这个索引.因此,只要满足最左的定义,都可以来加快速度.这个最左前缀可以是联合索引的最左 N 个字段，也可以是字符串索引的最左 M 个字符。</span></span><br><span class="line"><span class="string">## 索引下推</span></span><br><span class="line"><span class="string">MySQL5.6出现了一个新的功能,索引下推,可以在索引遍历过程中，对索引中包含的字段先做判断，直接过滤掉不满足条件的记录，减少回表次数。举个例子.  </span></span><br><span class="line"><span class="string">还是以联合索引(name, age)为例,现在有个需求:"找出名字第一个字是张,且年龄在10岁的所有男孩",SQL如下:</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span><span class="keyword">sql</span></span><br><span class="line">mysql&gt; <span class="keyword">select</span> * <span class="keyword">from</span> tuser <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'张%'</span> <span class="keyword">and</span> age=<span class="number">10</span> <span class="keyword">and</span> ismale=<span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
+<p>在没有索引下推之前,必须一个一个回表:如图<br><img src="image/面试四5.jpg" alt="无索引下推执行流程"><br>之后,我们可以在索引遍历过程中,判断是否符合条件,剪掉不符合条件的记录,减少回表次数<br><img src="image/面试四6.jpg" alt="索引下推执行流程"></p>
 
         
       
@@ -273,7 +289,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/31/@Comnent和@Configuration的区别/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/18/面试系列（三）数据库事务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -287,7 +303,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2019/07/31/@Comnent和@Configuration的区别/" class="post-title-link" itemprop="url">Untitled</a>
+            <a href="/2019/12/18/面试系列（三）数据库事务/" class="post-title-link" itemprop="url">Untitled</a>
           
         </h1>
 
@@ -302,147 +318,19 @@
                 
               
 
-              <time title="Created: 2019-07-31 13:18:17" itemprop="dateCreated datePublished" datetime="2019-07-31T13:18:17+08:00">2019-07-31</time>
+              <time title="Created: 2019-12-18 13:43:40" itemprop="dateCreated datePublished" datetime="2019-12-18T13:43:40+08:00">2019-12-18</time>
             </span>
           
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/28/org.apache.commons.beanutils/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2019/07/28/org.apache.commons.beanutils/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-20 12:03:12" itemprop="dateModified" datetime="2019-12-20T12:03:12+08:00">2019-12-20</time>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-07-28 11:54:07" itemprop="dateCreated datePublished" datetime="2019-07-28T11:54:07+08:00">2019-07-28</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/28/type接口/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/07/28/type接口/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-07-28 11:06:52 / Modified: 11:21:38" itemprop="dateCreated datePublished" datetime="2019-07-28T11:06:52+08:00">2019-07-28</time>
-            </span>
-          
-            
-
             
           
 
@@ -457,8 +345,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>今天正巧看到Type的源码里的定义，看到Type有五种类型：它们包括原始类型、参数化类型（泛型），数组类型、类型变量和基本类型。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.lang.reflect;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Type is the common superinterface for all types in the Java</span></span><br><span class="line"><span class="comment"> * programming language. These include raw types, parameterized types,</span></span><br><span class="line"><span class="comment"> * array types, type variables and primitive types.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.5</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Type</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns a string describing this type, including information</span></span><br><span class="line"><span class="comment">     * about any type parameters.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@implSpec</span> The default implementation calls &#123;<span class="doctag">@code</span> toString&#125;.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> a string describing this type</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span> 1.8</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">default</span> String <span class="title">getTypeName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://blog.csdn.net/weixin_34174322/article/details/85936762" target="_blank" rel="noopener">https://blog.csdn.net/weixin_34174322/article/details/85936762</a></p>
+          <p>数据库事务是针对一串操作，保证它要么全部执行完，要么一个都不执行。有四个指标：ACID，也就是原子性、一致性、隔离性、持久性，先说说i，也就是隔离性。<br>在MySQL中，事务是在引擎层实现的，InnoDB有事务，而MyISAM没有，这是它被取代的重要原因之一。说道差异，见面试系列（四）吧。<br>当数据库有多个事务同时运行的时候，可能会出现脏读、幻读、不可重复读的问题，为了解决这些问题，有了隔离级别的概念。事务的隔离级别，主要有：  </p>
+<ul>
+<li>读未提交：一个事务还未提交，他的变更就能被其他事务看到</li>
+<li>读提交：一个事务提交以后才能被其他事务看到</li>
+<li>可重复读：一个事务执行中看到的数据，不管其他事务有没有改变，都不会发生变化</li>
+<li>串行化：就是加锁，读锁或者写锁    </li>
+</ul>
+<p>实现上，在事务创建的时候会生成一个视图，访问的时候以视图的结果为准。在“读提交”下，视图是每个sql语句开始的时候创建的，“读未提交”下没有视图的概念，直接返回最新值，在“可重复读”下，视图是从事务开始就一直存在的。“串行化”根本就不会并发读一条记录。<br>可以通过show variables来查看当前级别：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'transaction_isolation'</span>;</span><br><span class="line">```  </span><br><span class="line">这是5.7及以后版本大的用法，5.6及以前用的是tx_isolation。  </span><br><span class="line"></span><br><span class="line"><span class="comment">## 事务隔离的实现</span></span><br><span class="line">事务隔离是通过回滚日志来实现的，在MySQL中，每条SQL执行后都会生成一条回滚的记录，可以通过这条记录得到上一个状态的值。比如一个值被顺序改成了1，2，3，4，就会有如下的记录。</span><br><span class="line">![视图](image/面试三1.png)  </span><br><span class="line">当前的值是4，但是在不同时刻启动的事务会有不同的read-view，在视图A、B、C里面，值分别是1，2，4，同一条记录在系统中可以存在多个版本，这就是数据库的多版本控制（MVCC）。</span><br><span class="line">然后因为回滚日志会在没有事务需要它的时候才被清理，所以长事务会占用大量存储空间。</span><br><span class="line"></span><br><span class="line"><span class="comment">## 事务的启动方式</span></span><br><span class="line">一般来说，有以下几种：</span><br><span class="line">- 显示启动事务，<span class="keyword">begin</span>或<span class="keyword">start</span> <span class="keyword">transaction</span>,提交是<span class="keyword">commit</span>,回滚是<span class="keyword">rollback</span>。</span><br><span class="line">- <span class="keyword">set</span> autocommit = <span class="number">0</span>;这个命令会把自动提交关上，所以你只要启动一个sql，事务就开始了，而且不会自动提交，直到<span class="keyword">commit</span>或<span class="keyword">rollback</span>，或者断开连接。</span><br><span class="line"></span><br><span class="line">可以通过下面这条查询长事务：</span><br><span class="line"><span class="string">``</span><span class="string">`sql</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx_started))&gt;60</span></span><br></pre></td></tr></table></figure></p>
 
         
       
@@ -483,7 +377,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/18/SpringContextUtil实现/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/17/面试系列（二）linuxIO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -497,7 +391,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2019/07/18/SpringContextUtil实现/" class="post-title-link" itemprop="url">Untitled</a>
+            <a href="/2019/12/17/面试系列（二）linuxIO/" class="post-title-link" itemprop="url">Untitled</a>
           
         </h1>
 
@@ -512,7 +406,7 @@
                 
               
 
-              <time title="Created: 2019-07-18 22:47:16 / Modified: 22:51:41" itemprop="dateCreated datePublished" datetime="2019-07-18T22:47:16+08:00">2019-07-18</time>
+              <time title="Created: 2019-12-17 13:15:15 / Modified: 13:48:35" itemprop="dateCreated datePublished" datetime="2019-12-17T13:15:15+08:00">2019-12-17</time>
             </span>
           
             
@@ -531,7 +425,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="通过SpringContextUtil实现ApplicationContextAware接口"><a href="#通过SpringContextUtil实现ApplicationContextAware接口" class="headerlink" title="通过SpringContextUtil实现ApplicationContextAware接口"></a>通过SpringContextUtil实现ApplicationContextAware接口</h2><p>实现ApplicationContextAware接口的回调方法。设置上下文环境时setApplicationContext方法会使private static ApplicationContext applicationContext;为null;<br>然后在SpringContextUtil类上加注解@Service就可以了</p>
+          <p>传统的UNIX系统实现在内核中设有高速缓存区或页高速缓冲，大多数磁盘I/O都通过缓冲区进行，当我们向文件中写入数据时，内核通常先将数据复制到缓冲区中，然后排入队列，晚一些再写入磁盘，这种方式称为延迟写(delayed write)。<br>延迟写减少了磁盘I/O次数，但是降低了文件的更新速度，为了保证磁盘上实际文件系统和缓冲区内容的一致性，UNIX系统提供了sync、fsync、和fdatasync三个函数。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fsync</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fdatasync</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;   <span class="comment">//返回值：若成功，返回0，出错返回-1</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sync</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line">```  </span><br><span class="line">sync只是将所有修改过的块缓冲区排入写队列，然后就返回，不等待实际写磁盘操作结束。</span><br><span class="line">通常，称为update的系统守护进程周期性地调用sync函数，保证定时冲洗(flush)内核的块缓冲区，命令sync(<span class="number">1</span>)也调用sync函数。</span><br><span class="line">fsync函数只对由文件描述符fd指定的一个文件起作用，并且等待写操作结束才返回，fsync可用于数据库这样的应用程序，从而保证修改过的块立刻写到磁盘上。</span><br><span class="line">fdatasync函数类似fsync，但它只影响文件的数据部分，而除数据外，fsync还会同步更新文件地属性。除了同步文件的修改内容（脏页），fsync还会同步文件的描述信息（metadata，包括size、访问时间st_atime &amp; st_mtime等等），因为文件的数据和metadata通常存在硬盘的不同地方，因此fsync至少需要两次IO写操作，fsync的man page这样说：</span><br></pre></td></tr></table></figure></p>
+<p>“Unfortunately fsync() will always initialize two write operations : one for the newly written data and another one in order to update the modification time stored in the inode. If the modification time is not a part of the transaction concept fdatasync() can be used to avoid unnecessary inode disk write operations.”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">多余的一次IO操作，有多么昂贵呢？根据Wikipedia的数据，当前硬盘驱动的平均寻道时间（Average seek time）大约是3~15ms，7200RPM硬盘的平均旋转延迟（Average rotational latency）大约为4ms，因此一次IO操作的耗时大约为10ms左右。这个数字意味着什么？下文还会提到。</span><br><span class="line">fdatasync的功能与fsync类似，但是仅仅在必要的情况下才会同步metadata，因此可以减少一次IO写操作。那么，什么是“必要的情况”呢？根据man page中的解释：</span><br></pre></td></tr></table></figure></p>
+<p>“fdatasync does not flush modified metadata unless that metadata is needed in order to allow a subsequent data retrieval to be corretly handled.”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">举例来说，文件的尺寸（st_size）如果变化，是需要立即同步的，否则OS一旦崩溃，即使文件的数据部分已同步，由于metadata没有同步，依然读不到修改的内容。而最后访问时间(atime)/修改时间(mtime)是不需要每次都同步的，只要应用程序对这两个时间戳没有苛刻的要求，基本无伤大雅。</span><br><span class="line">所以在数据库中，为了满足事务要求，需要同步等待磁盘操作完成，所以需要往往非常耗时。</span><br><span class="line">所以可能要使用fdatasync减少对metadata的更新，需要确保文件的尺寸没有发生变化，但是日志文件天生是追加型的，似乎很难满足fdatasync的要求。</span><br><span class="line">Berkeley DB是这样处理的</span><br></pre></td></tr></table></figure></p>
+<p>1.给log文件编号，每个固定10MB，从1开始编号，名称格式为“log.%010d”<br>2.在第一次写log文件时，先写最后1个page，拓展为10MB大小<br>3.向log文件中追加记录时，由于文件的尺寸不发生变化，使用fdatasync可以大大优化写log的效率<br>4.如果写满了，就新建一个log文件</p>
 
         
       
@@ -556,7 +453,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/31/mergesort协程/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/17/面试系列（一）数据库日志/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -570,7 +467,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2019/05/31/mergesort协程/" class="post-title-link" itemprop="url">Untitled</a>
+            <a href="/2019/12/17/面试系列（一）数据库日志/" class="post-title-link" itemprop="url">Untitled</a>
           
         </h1>
 
@@ -585,7 +482,7 @@
                 
               
 
-              <time title="Created: 2019-05-31 12:05:52 / Modified: 23:02:03" itemprop="dateCreated datePublished" datetime="2019-05-31T12:05:52+08:00">2019-05-31</time>
+              <time title="Created: 2019-12-17 11:41:08 / Modified: 18:45:25" itemprop="dateCreated datePublished" datetime="2019-12-17T11:41:08+08:00">2019-12-17</time>
             </span>
           
             
@@ -604,23 +501,168 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>死锁</p>
-<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">Merge_Sort</span><span class="params">(src []<span class="keyword">int64</span>, p <span class="keyword">int</span>, r <span class="keyword">int</span>, myChan <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> {
-    <span class="keyword">if</span> p &lt; r {
-        q := (p + r) &gt;&gt; <span class="number">1</span>
-        <span class="comment">//fmt.Println(q)</span>
-        recv := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)
-        <span class="keyword">go</span> Merge_Sort(src, p, q,recv )
-        Merge_Sort(src, q+<span class="number">1</span>, r, <span class="literal">nil</span>)
-        &lt;- recv
-        Merge(src, p, q, r)
-        <span class="keyword">if</span> myChan != <span class="literal">nil</span> {
-            myChan &lt;- <span class="number">0</span>
-        }
-    }
-}
+          <p>一般来说，一条查询语句会经过连接器、分析器、优化器、执行器，最后由执行引擎获取到结果。<br>mysql还有两个日志模块，redo log和binlog，mysql里经常用到Write-Ahead Logging技术，也就是先写日志，再写磁盘。redo log是有大小限制的，其实就像是一个循环队列，有两个标记，write pos和checkpoint，write pos是当前写的位置，checkpoint是当前要擦除的位置，擦除前要把记录更新到磁盘。这样可以保证即使数据库异常重启，也能保证crash-safe。<br>redo log包括两部分，一是缓冲redo log buffer，二是持久化的redo log file，InnoDB通过force log at commit实现事件的持久性，即在事务提交中，必须先将所有的事务日志写入磁盘的redo log file和undo log file，为了确保每次日志都能写入到事务日志文件中，在每次将log buffer中的日志写入日志文件的过程中都会调用一次操作系统的fsync操作(即fsync()系统调用)。参考面试系列第二篇。<br>redo log 和binlog有几点不同：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.上面说的redo log是InnoDB引擎特有的，而binlog则是MySql的Server层实现的；  </span><br><span class="line">2.redo log是物理日志，记录的是在某个数据页上做了什么修改，binlog是逻辑日志，记录的是这个语句的原始逻辑，比如：给ID=1这一行的a字段+1；  </span><br><span class="line">3.redo log 是循环写的，空间固定会用完；binlog 是可以追加写入的。“追加写”是指 binlog 文件写到一定大小后会切换到下一个，并不会覆盖以前的日志。</span><br></pre></td></tr></table></figure></p>
+<p>update语句的流程大致是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1.执行器先找引擎取 ID=2 这一行。ID 是主键，引擎直接用树搜索找到这一行。如果 ID=2 这一行所在的数据页本来就在内存中，就直接返回给执行器；否则，需要先从磁盘读入内存，然后再返回。</span><br><span class="line">2.执行器拿到引擎给的行数据，把这个值加上 1，比如原来是 N，现在就是 N+1，得到新的一行数据，再调用引擎接口写入这行新数据。</span><br><span class="line">3.引擎将这行新数据更新到内存中，同时将这个更新操作记录到 redo log 里面，此时 redo log 处于 prepare 状态。</span><br><span class="line">4.然后告知执行器执行完成了，随时可以提交事务。执行器生成这个操作的 binlog，并把 binlog 写入磁盘。</span><br><span class="line">5.执行器调用引擎的提交事务接口，引擎把刚刚写入的 redo log 改成提交（commit）状态，更新完成。</span><br><span class="line">```  </span><br><span class="line">最后三步将redo log分成了两个阶段：prepare和commit，这就是“两阶段提交”。</span><br><span class="line"></span><br><span class="line">## 两阶段提交</span><br><span class="line">两阶段提交是为了让两个日志的逻辑保持一致，要说明这个问题，我们得先回答另一个问题：&lt;b&gt;怎样让数据库恢复到半个月内任意一个状态？&lt;/b&gt;  </span><br><span class="line">如果数据库要恢复到指定的某一秒，先找到最近的全量备份，把这个备份恢复到临时库，然后从备份的时间点开始，将binlog依次恢复到那个指定的时刻。  </span><br><span class="line">说完了数据恢复的问题，再来看为什么需要保持两个日志的一致。</span><br><span class="line">redo log和binlog是两个独立的逻辑，如果没有两阶段提交，要么是先存redo log，再存binlog，或者先存binlog再存redo log，我们来看看这两种情况会有什么问题。</span><br><span class="line">举个例子，一个update table set a = a+1 where id = 2;  </span><br><span class="line">假如=在写入第一个log，没写第二个log时发生崩溃，看看这两种情况分别会有什么问题：</span><br></pre></td></tr></table></figure></p>
+<p>1.如果先写了binlog，没写redo log，则事务中不会有a = a+1这一条，也就是当前库中a还是a，但是如果用到binlog，会多执行一条令a = a+1，这样就与原表不符了。<br>2.如果先写了redo log，因为redo log已经写完了，即使系统崩溃还是能恢复过来，则当前库中a = a+1,但是binlog里没有这个记录，则回复的时候会丢失这个改动。<br><code>`</code><br>当然平时可能用到恢复备份库的机会不多，一个更常见的场景是需要扩容的时候，需要备库来帮助读，常见的做法也是全量备份加上binlog来实现的。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/06/单元测试的纠结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/12/06/单元测试的纠结/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-12-06 13:06:18" itemprop="dateCreated datePublished" datetime="2019-12-06T13:06:18+08:00">2019-12-06</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-17 11:32:16" itemprop="dateModified" datetime="2019-12-17T11:32:16+08:00">2019-12-17</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>以前实习的时候，公司用的是spring cloud，完成某个功能需要横跨好几个模块，但是并没有什么测试代码，验证程序的正确性就是靠启动几个相关的服务，然后postman手动测试，能跑通就算没有问题了。那段时间还学习过一个单元测试的框架MockIto，不过感觉很啰嗦，简直像是在聊天，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testIsUserEnabled_userStatusIsClosed_returnFalse</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    UserInfo userInfo = <span class="keyword">new</span> UserInfo();</span><br><span class="line">    userInfo.status = UserInfo.CLOSED;</span><br><span class="line">    doReturn(userInfo).when(userDao).getUserInfo(anyLong());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> isUserEnabled = userService.isUserEnabled(<span class="number">1l</span>);</span><br><span class="line"></span><br><span class="line">    Assert.assertFalse(isUserEnabled);</span><br><span class="line">&#125;  </span><br><span class="line">```  </span><br><span class="line">然后看到了秦大的分享，决定尝试 spock框架，同样的例子，写出来是这样的：</span><br><span class="line">```groovy</span><br><span class="line">def <span class="string">"isUserEnabled should return true only if user status is enabled"</span>() &#123;</span><br><span class="line">    given:</span><br><span class="line">    UserInfo userInfo = <span class="keyword">new</span> UserInfo(</span><br><span class="line">            status: actualUserStatus</span><br><span class="line">    );</span><br><span class="line">    userDao.getUserInfo(_) &gt;&gt; userInfo;</span><br><span class="line"></span><br><span class="line">    expect:</span><br><span class="line">    userService.isUserEnabled(<span class="number">1l</span>) == expectedEnabled;</span><br><span class="line"></span><br><span class="line">    where:</span><br><span class="line">    actualUserStatus   | expectedEnabled</span><br><span class="line">    UserInfo.ENABLED   | <span class="keyword">true</span></span><br><span class="line">    UserInfo.INIT      | <span class="keyword">false</span></span><br><span class="line">    UserInfo.CLOSED    | <span class="keyword">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>是不是感觉优雅多了，而且使用groovy，可以享受到脚本语言的便利。  </p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/30/动态代理的选择/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/11/30/动态代理的选择/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-11-30 09:59:03 / Modified: 23:07:55" itemprop="dateCreated datePublished" datetime="2019-11-30T09:59:03+08:00">2019-11-30</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Spring使用AOP(面向切面编程)来管理你的应用。而实现代理有两种方式：CGLIB和JDK动态代理。<br>看一段JDK动态代理的demo<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyDynamicProxy</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        HelloImp hello = <span class="keyword">new</span> HelloImp();</span><br><span class="line">        MyInvocationHandler handler = <span class="keyword">new</span> MyInvocationHandler(hello);</span><br><span class="line">        Hello proxyHello = (Hello) Proxy.newProxyInstance(HelloImp.class.getClassLoader(),</span><br><span class="line">                HelloImp.class.getInterfaces(), handler);</span><br><span class="line">        proxyHello.sayHello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">sayHello</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloImp</span> <span class="keyword">implements</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyInvocationHandler</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Invoking sayHello"</span>);</span><br><span class="line">        Object result = method.invoke(target, args);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line">上面的例子简单地实现了动态代理的创建和代理操作，以接口为纽带，为被代理目标创建代理对象，这样就可以利用代理对象间接运行调用目标的逻辑，并且实现轻易的拓展。比如这里额外打印了一句话。  </span><br><span class="line">但是这种实现是以接口为中心的，如果本身的系统设计中不需要接口，这样相当于额外增加了限制，因此可以选择另外一种不依赖接口的动态代理方式，cglib;</span><br><span class="line">cglib使用的是创建被代理目标子类的方式。在Spring中，使用哪种方式是由Spring指定的，如果一个目标类实现了一个或多个接口，Spring就会实现JDK动态代理，这促使你更多的采用面向接口的方式编程。如果没有实现接口，就会使用cglib。</span><br><span class="line">当然你也可以强制指定使用cglib动态代理，当然这是有限制的，一是目标类不能是<span class="keyword">final</span>的，二是需要CGLIB2 字节码库。</span><br><span class="line">```xml</span><br><span class="line">&lt;aop:config proxy-target-<span class="class"><span class="keyword">class</span></span>=<span class="string">"true"</span>&gt;</span><br><span class="line">	</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">&lt;/aop:config&gt;</span><br></pre></td></tr></table></figure></p>
+<p>如果是使用@AspectJ注解的话，配置如下</p>
+<pre><code class="xml"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span> <span class="attr">proxy-target-class</span>=<span class="string">"true"</span>/&gt;</span>
 </code></pre>
-<h3 id="all-goroutines-are-asleep-deadlock"><a href="#all-goroutines-are-asleep-deadlock" class="headerlink" title="all goroutines are asleep - deadlock!"></a>all goroutines are asleep - deadlock!</h3><p>Total: 7.07mins<br>ROUTINE ======================== pingcap/talentplan/tidb/mergesort.BenchmarkMergeSort in /home/talent-plan/tidb/mergesort/bench_test.go<br>         0      5.05s (flat, cum)  1.19% of Total<br>         .          .      5:    “testing”<br>         .          .      6:)<br>         .          .      7:<br>         .          .      8:func BenchmarkMergeSort(b <em>testing.B) {<br>         .          .      9:    numElements := 16 &lt;&lt; 20<br>         .       70ms     10:    src := make([]int64, numElements)<br>         .       50ms     11:    original := make([]int64, numElements)<br>         .      3.02s     12:    prepare(original)<br>         .          .     13:<br>         .          .     14:    b.ResetTimer()<br>         .          .     15:    for i := 0; i &lt; b.N; i++ {<br>         .          .     16:        b.StopTimer()<br>         .      140ms     17:        copy(src, original)<br>         .          .     18:        b.StartTimer()<br>         .      1.77s     19:        MergeSort(src)<br>         .          .     20:    }<br>         .          .     21:}<br>         .          .     22:<br>         .          .     23:func BenchmarkNormalSort(b </em>testing.B) {<br>         .          .     24:    numElements := 16 &lt;&lt; 20<br>ROUTINE ======================== pingcap/talentplan/tidb/mergesort.Merge in /home/talent-plan/tidb/mergesort/mergesort.go<br>       24s     45.31s (flat, cum) 10.69% of Total<br>         .          .     20:    }<br>         .          .     21:}<br>         .          .     22:<br>         .          .     23:const INT_MAX = int64(^uint64(0) &gt;&gt; 1)<br>         .          .     24:<br>     120ms      120ms     25:func Merge(src []int64, p, q, r int) {<br>     250ms      250ms     26:        m := q - p + 1<br>      60ms       60ms     27:        n := r - q<br>     160ms     11.65s     28:        ml := make([]int64, m+1)<br>     160ms      9.98s     29:        nl := make([]int64, n+1)<br>         .          .     30:<br>     700ms      700ms     31:        for i := 0; i &lt; m; i++ {<br>     4.07s      4.07s     32:            ml[i] = src[p+i]<br>         .          .     33:        }<br>     840ms      840ms     34:        for i := 0; i &lt; n; i++ {<br>     1.74s      1.74s     35:            nl[i] = src[q+i+1]<br>         .          .     36:        }<br>      60ms       60ms     37:        ml[m] = INT_MAX<br>      80ms       80ms     38:        nl[n] = INT_MAX<br>         .          .     39:<br>         .          .     40:        i := 0<br>         .          .     41:        j := 0<br>     510ms      510ms     42:        for k := p; k &lt;= r; k++ {<br>     3.09s      3.09s     43:            if ml[i] &lt; nl[j] {<br>     5.32s      5.32s     44:                src[k] = ml[i]<br>     1.37s      1.37s     45:                i++<br>         .          .     46:            } else {<br>     3.96s      3.96s     47:                src[k] = nl[j]<br>     1.51s      1.51s     48:                j++<br>         .          .     49:            }<br>         .          .     50:        }<br>         .          .     51:    }<br>         .          .     52://func  main() {<br>         .          .     53://    s := []int64{2,3,4,6,2,6,3,6,3,6,4,67,25632,32,252,235,235}<br>ROUTINE ======================== pingcap/talentplan/tidb/mergesort.MergeSort in /home/talent-plan/tidb/mergesort/mergesort.go<br>         0      1.77s (flat, cum)  0.42% of Total<br>         .          .      1:package main<br>         .          .      2:<br>         .          .      3:// MergeSort performs the merge sort algorithm.<br>         .          .      4:// Please supplement this function to accomplish the home work.<br>         .          .      5:func MergeSort(src []int64) {<br>         .      1.77s      6:    Merge_Sort(src, 0, len(src)-1, nil)<br>         .          .      7:}<br>         .          .      8:<br>         .          .      9:func Merge_Sort(src []int64, p int, r int, myChan chan int) {<br>         .          .     10:    if p &lt; r {<br>         .          .     11:        q := (p + r) &gt;&gt; 1<br>ROUTINE ======================== pingcap/talentplan/tidb/mergesort.Merge_Sort in /home/talent-plan/tidb/mergesort/mergesort.go<br>    10.45s   5.33mins (flat, cum) 75.48% of Total<br>         .          .      4:// Please supplement this function to accomplish the home work.<br>         .          .      5:func MergeSort(src []int64) {<br>         .          .      6:    Merge_Sort(src, 0, len(src)-1, nil)<br>         .          .      7:}<br>         .          .      8:<br>     2.18s      2.18s      9:func Merge_Sort(src []int64, p int, r int, myChan chan int) {<br>     2.39s      2.39s     10:    if p &lt; r {<br>      60ms       60ms     11:        q := (p + r) &gt;&gt; 1<br>     310ms   2.07mins     12:        recv := make(chan int)<br>     910ms     29.48s     13:        go Merge_Sort(src, p, q,recv )<br>     430ms   1.08mins     14:        Merge_Sort(src, q+1, r, nil)<br>     810ms     26.36s     15:        &lt;- recv<br>     1.92s     47.23s     16:        Merge(src, p, q, r)<br>         .          .     17:    }<br>     1.07s      1.07s     18:    if myChan != nil {<br>     370ms     22.10s     19:        myChan <- 0="" .="" 20:="" }="" 21:}="" 22:="" 23:const="" int_max="int64(^uint64(0)">&gt; 1)<br>         .          .     24:</-></p>
+<p>spring官方文档传送门：<a href="https://docs.spring.io/spring/docs/2.0.0/reference/aop.html#d0e9015" target="_blank" rel="noopener">https://docs.spring.io/spring/docs/2.0.0/reference/aop.html#d0e9015</a>  </p>
 
         
       
@@ -645,7 +687,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/21/go/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/ex2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -659,7 +701,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2019/05/21/go/" class="post-title-link" itemprop="url">Untitled</a>
+            <a href="/2019/10/12/ex2/" class="post-title-link" itemprop="url">Untitled</a>
           
         </h1>
 
@@ -674,88 +716,8 @@
                 
               
 
-              <time title="Created: 2019-05-21 21:35:54 / Modified: 21:36:04" itemprop="dateCreated datePublished" datetime="2019-05-21T21:35:54+08:00">2019-05-21</time>
+              <time title="Created: 2019-10-12 13:58:10" itemprop="dateCreated datePublished" datetime="2019-10-12T13:58:10+08:00">2019-10-12</time>
             </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Exercise: Slices<br>Implement Pic. It should return a slice of length dy, each element of which is a slice of dx 8-bit unsigned integers. When you run the program, it will display your picture, interpreting the integers as grayscale (well, bluescale) values.</p>
-<p>The choice of image is up to you. Interesting functions include (x+y)/2, x*y, and x^y.</p>
-<p>(You need to use a loop to allocate each []uint8 inside the [][]uint8.)</p>
-<p>(Use uint8(intValue) to convert between types.)</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/22/读写csv文件遇到的问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/03/22/读写csv文件遇到的问题/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-03-22 11:04:07 / Modified: 11:04:08" itemprop="dateCreated datePublished" datetime="2019-03-22T11:04:07+08:00">2019-03-22</time>
-            </span>
-          
-            
-
-            
           
 
           
@@ -793,7 +755,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/23/sql中count的条件判断/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/实模式和保护模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -807,7 +769,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2018/12/23/sql中count的条件判断/" class="post-title-link" itemprop="url">sql中count的条件判断</a>
+            <a href="/2019/09/16/实模式和保护模式/" class="post-title-link" itemprop="url">Untitled</a>
           
         </h1>
 
@@ -822,7 +784,7 @@
                 
               
 
-              <time title="Created: 2018-12-23 13:37:49 / Modified: 14:03:09" itemprop="dateCreated datePublished" datetime="2018-12-23T13:37:49+08:00">2018-12-23</time>
+              <time title="Created: 2019-09-16 10:41:35 / Modified: 11:17:01" itemprop="dateCreated datePublished" datetime="2019-09-16T10:41:35+08:00">2019-09-16</time>
             </span>
           
             
@@ -841,13 +803,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>这几天在写一个统计数据的sql时，遇到了一些问题。记录下来。<br>关于sql里面的Count函数，我i在idea里面写sql的时候自动补全是默认在count和（）之间空了一格的，然后就报错。网上一搜才发现不能有空格。<br>然后是count函数里处理多个条件，格式是 COUNT(case when <em>param1</em> and <em>param2</em> then <em>result1</em> else <em>result2</em> end)<br>when后面执行判断，else是判断命中后的操作，else是没有命中的操作，本来我是</p>
-<blockquote>
-<blockquote>
-<p>then 1 else 0  </p>
-</blockquote>
-</blockquote>
-<p>结果判断条件无效，后来发现应该<br><img src="image/blog1.png" alt="图片">  </p>
+          <p>实模式(real mode)和保护模式(protected mode)</p>
+<p>这是CPU的工作模式，在早期CPU上运行的是实模式，而现代CPU用的是保护模式，至于为什么现代PC也要从实模式启动，是为了向后兼容。<br>实模式出现于早期8088CPU时期，当时硬件性能有限，只有20位地址线，地址空间只有1MB，以及8个16位的通用寄存器，以及4个16位的段寄存器，因为只有十六位，所以想指向20位的地址需要进行一些变换。</p>
+<p>(段基址：段偏移量)，第一个字段是段基址，有段寄存器提供%cs，%ds，%ss，%es的。具体这个指令采用哪个段寄存器是由这个指令的类型来决定的。比如要取指令就是采用%cs寄存器，要读取或写入数据就是%ds寄存器，如果要对堆栈操作就是%ss寄存器.  第二个是段内偏移量，代表访问的内存距离段基址的偏移，由通用寄存器提供。这里主存的计算方式是 段基址向左偏移四位，再与段内偏移量相加。<br>所以假设 %cs中的值是0xff00，%ax = 0x0110。则(%cs:%ax)这个地址对应的真实物理地址是 0xff00&lt;&lt;4 + 0x0110 = 0xff110。<br>但是！现在的CPU地址线个数已经变成了32根，所以可访问内存到了4GB，寄存器也变成32位的，所以原来的内存地址计算方式不再适合了。<br>保护模式的内存访问方式参见CSAPP第九章虚拟内存</p>
 
         
       
@@ -872,7 +830,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/18/first-article/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/11/x86汇编/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -886,7 +844,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2018/10/18/first-article/" class="post-title-link" itemprop="url">first article</a>
+            <a href="/2019/09/11/x86汇编/" class="post-title-link" itemprop="url">Untitled</a>
           
         </h1>
 
@@ -901,7 +859,7 @@
                 
               
 
-              <time title="Created: 2018-10-18 19:36:27" itemprop="dateCreated datePublished" datetime="2018-10-18T19:36:27+08:00">2018-10-18</time>
+              <time title="Created: 2019-09-11 11:15:04" itemprop="dateCreated datePublished" datetime="2019-09-11T11:15:04+08:00">2019-09-11</time>
             </span>
           
 
@@ -917,6 +875,84 @@
 
       
           
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/07/@Autowired注解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/09/07/@Autowired注解/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-09-07 11:23:48 / Modified: 11:27:26" itemprop="dateCreated datePublished" datetime="2019-09-07T11:23:48+08:00">2019-09-07</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>##@Autowire依赖注入的三种方式</p>
+<p>今天突然发现idea报的警告，是说</p>
+<pre><code class="java"><span class="meta">@Autowired</span>
+RegistService registService;
+</code></pre>
+<p>警告内容是Field injection is not recommended，意思是使用变量依赖注入的方式是不推荐的，<br>依赖注入一共有三种方式：<br>变量依赖注入<br>构造器构造注入<br>set方法注入</p>
+
         
       
     </div>
@@ -939,7 +975,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -984,7 +1020,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1005,7 +1041,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

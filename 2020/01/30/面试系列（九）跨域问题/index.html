@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.7.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="CORS 定义 Cross-Origin Resource Sharing (CORS)跨来源资源共享是一份浏览器技术的规范，提供了Web服务从不同域传来沙盒脚本的方法，以避开浏览器的同源策略。它使用附加的HTTP标头来告诉浏览器从不同的来源访问选定的资源。 出于安全原因，浏览器限制了从脚本发起的跨域HTTP请求，如XMLHttpRequest，这意味着使用这些API的Web应用程序只能从加载应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2020/01/30/面试系列（九）跨域问题/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="CORS 定义 Cross-Origin Resource Sharing (CORS)跨来源资源共享是一份浏览器技术的规范，提供了Web服务从不同域传来沙盒脚本的方法，以避开浏览器的同源策略。它使用附加的HTTP标头来告诉浏览器从不同的来源访问选定的资源。 出于安全原因，浏览器限制了从脚本发起的跨域HTTP请求，如XMLHttpRequest，这意味着使用这些API的Web应用程序只能从加载应用">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-01-30T04:19:39.641Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="CORS 定义 Cross-Origin Resource Sharing (CORS)跨来源资源共享是一份浏览器技术的规范，提供了Web服务从不同域传来沙盒脚本的方法，以避开浏览器的同源策略。它使用附加的HTTP标头来告诉浏览器从不同的来源访问选定的资源。 出于安全原因，浏览器限制了从脚本发起的跨域HTTP请求，如XMLHttpRequest，这意味着使用这些API的Web应用程序只能从加载应用">
+  <link rel="canonical" href="http://yoursite.com/2020/01/30/面试系列（九）跨域问题/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/30/面试系列（九）跨域问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-01-30 09:30:12 / Modified: 12:19:39" itemprop="dateCreated datePublished" datetime="2020-01-30T09:30:12+08:00">2020-01-30</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="CORS-定义"><a href="#CORS-定义" class="headerlink" title="CORS 定义"></a>CORS 定义</h2><p> Cross-Origin Resource Sharing (CORS)跨来源资源共享是一份浏览器技术的规范，提供了Web服务从不同域传来沙盒脚本的方法，以避开浏览器的同源策略。它使用附加的HTTP标头来告诉浏览器从不同的来源访问选定的资源。<br> 出于安全原因，浏览器限制了从脚本发起的跨域HTTP请求，如XMLHttpRequest，这意味着使用这些API的Web应用程序只能从加载应用程序的相同来源请求资源，除非来自其他来源的响应包括正确的CORS标头。</p>
+<h3 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h3><p> 有些请求不会触发CORS的预检，尽管Fetch规范（定义了CORS）没有这么定义，但我们就这么叫它吧，简单请求是满足以下所有要求的请求：  </p>
+<ul>
+<li>允许的方法之一：<ul>
+<li>GET</li>
+<li>HEAD</li>
+<li>POST</li>
+<li>除了由user-agent自动设置的标头（比如Connnection, User-Agent），唯一允许手动设置的标头就是由Fetch标准定义的“CORS-safelisted request-header”：</li>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Context-Language</li>
+<li>Context-Type</li>
+<li>等等 后面的就不列举了吧</li>
+<li>对于Context-Type允许的值只有：</li>
+<li>application/x-www-form-urlencoded</li>
+<li>multipart/form-data</li>
+<li>text/plain</li>
+<li>没有在 XMLHttpRequestUpload对象上注册事件监听器</li>
+<li>没有使用ReadableStream对象</li>
+</ul>
+</li>
+</ul>
+<p>例如，假设Web内容<a href="https://foo.example希望调用domain上的内容https://bar.other。此类代码可用于部署在foo.example以下位置的JavaScript中：" target="_blank" rel="noopener">https://foo.example希望调用domain上的内容https://bar.other。此类代码可用于部署在foo.example以下位置的JavaScript中：</a><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="keyword">const</span> url = <span class="string">'https://bar.other/resources/public-data/'</span>;</span><br><span class="line">   </span><br><span class="line">xhr.open(<span class="string">'GET'</span>, url);</span><br><span class="line">xhr.onreadystatechange = someHandler;</span><br><span class="line">xhr.send(); </span><br><span class="line"><span class="string">``</span><span class="string">`  </span></span><br><span class="line"><span class="string">![simple request](image/面试九1.png)</span></span><br><span class="line"><span class="string">让我们看看浏览器向服务器发送的请求和服务器的回应</span></span><br></pre></td></tr></table></figure></p>
+<p>GET /resources/public-data/ HTTP/1.1<br>Host: bar.other<br>User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:71.0) Gecko/20100101 Firefox/71.0<br>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,<em>/</em>;q=0.8<br>Accept-Language: en-us,en;q=0.5<br>Accept-Encoding: gzip,deflate<br>Connection: keep-alive<br>Origin: <a href="https://foo.example" target="_blank" rel="noopener">https://foo.example</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Origin标识了请求的来源是foo.example</span><br></pre></td></tr></table></figure></p>
+<p>HTTP/1.1 200 OK<br>Date: Mon, 01 Dec 2008 00:23:53 GMT<br>Server: Apache/2<br>Access-Control-Allow-Origin: *<br>Keep-Alive: timeout=2, max=100<br>Connection: Keep-Alive<br>Transfer-Encoding: chunked<br>Content-Type: application/xml</p>
+<p>[…XML Data…]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">服务器返回了Access-Control-Allow-Origin标头</span><br><span class="line"></span><br><span class="line">其余的参考</span><br><span class="line">&lt;a&gt;https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS&lt;/a&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 与JSONP的区别</span><br><span class="line">JSONP是资料格式JSON的一种“使用模式”，可以让网页从别的网域要资料，由于同源策略，一般来说位于server1.example.com的网页无法与不是 server1.example.com的服务器沟通，而HTML的script元素是一个例外。利用script元素的这个开放策略，网页可以得到从其他来源动态产生的JSON资料，而这种使用模式就是所谓的JSONP。  </span><br><span class="line"></span><br><span class="line">- JSONP只能实现GET请求，而CORS支持所有类型的HTTP请求</span><br><span class="line">- 使用CORS，开发者可以使用普通的XMLHttpRequest发起请求和获得数据，比起JSONP有更好的错误处理</span><br><span class="line">- JSONP主要被老的浏览器支持，它们往往不支持CORS，而绝大多数现代浏览器都已经支持了CORS</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 再说几个CORS的解决方案</span><br><span class="line">基本思想都是使用自定义的HTTP头部允许浏览器和服务器相互了解对方</span><br><span class="line"></span><br><span class="line">### 一、 简单的自定义CORSFilter / Interceptor  </span><br><span class="line">在web.xml里添加filter</span><br><span class="line">```xml</span><br><span class="line">&lt;filter&gt;</span><br><span class="line">    &lt;filter-name&gt;cros&lt;/filter-name&gt;</span><br><span class="line">    &lt;filter-class&gt;cn.ifengkou.test.filter.CORSFilter&lt;/filter-class&gt;</span><br><span class="line">&lt;/filter&gt;</span><br><span class="line">&lt;filter-mapping&gt;</span><br><span class="line">    &lt;filter-name&gt;cros&lt;/filter-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line">&lt;/filter-mapping&gt;</span><br></pre></td></tr></table></figure></p>
+<p>新增CORSFilter类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CORSFilter</span> <span class="keyword">extends</span> <span class="title">OncePerRequestFilter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        response.addHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</span><br><span class="line">        response.addHeader(<span class="string">"Access-Control-Allow-Methods"</span>, <span class="string">"GET, POST, PUT, DELETE"</span>);</span><br><span class="line">        response.addHeader(<span class="string">"Access-Control-Allow-Headers"</span>, <span class="string">"Content-Type"</span>);</span><br><span class="line">        response.addHeader(<span class="string">"Access-Control-Max-Age"</span>, <span class="string">"1800"</span>);<span class="comment">//30 min</span></span><br><span class="line">        filterChain.doFilter(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="二、Nginx-配置支持Ajax跨域"><a href="#二、Nginx-配置支持Ajax跨域" class="headerlink" title="二、Nginx 配置支持Ajax跨域"></a>二、Nginx 配置支持Ajax跨域</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Wide-open CORS config for nginx</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">     <span class="attribute">if</span> (<span class="variable">$request_method</span> = <span class="string">'OPTIONS'</span>) &#123;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Allow-Origin'</span> <span class="string">'*'</span>;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Allow-Methods'</span> <span class="string">'GET, POST, OPTIONS'</span>;</span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># Custom headers and headers various browsers *should* be OK with but aren't</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Allow-Headers'</span> <span class="string">'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type'</span>;</span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># Tell client that this pre-flight info is valid for 20 days</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Max-Age'</span> <span class="number">1728000</span>;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Content-Type'</span> <span class="string">'text/plain charset=UTF-8'</span>;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Content-Length'</span> <span class="number">0</span>;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">204</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="attribute">if</span> (<span class="variable">$request_method</span> = <span class="string">'POST'</span>) &#123;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Allow-Origin'</span> <span class="string">'*'</span>;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Allow-Methods'</span> <span class="string">'GET, POST, OPTIONS'</span>;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Allow-Headers'</span> <span class="string">'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type'</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="attribute">if</span> (<span class="variable">$request_method</span> = <span class="string">'GET'</span>) &#123;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Allow-Origin'</span> <span class="string">'*'</span>;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Allow-Methods'</span> <span class="string">'GET, POST, OPTIONS'</span>;</span><br><span class="line">        <span class="attribute">add_header</span> <span class="string">'Access-Control-Allow-Headers'</span> <span class="string">'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type'</span>;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、支持多域名配置的CORS-Filter"><a href="#三、支持多域名配置的CORS-Filter" class="headerlink" title="三、支持多域名配置的CORS Filter"></a>三、支持多域名配置的CORS Filter</h3><p>也就是别人的轮子<br>org.ebaysf.web 的 cors-filter,项目地址：<a href="https://github.com/ebay/cors-filter" target="_blank" rel="noopener">https://github.com/ebay/cors-filter</a><br>ebaysf的cors-filter 只有一个类CORSFilter。也就是一个拦截器，implements Filter<br>先通过Filter的init方法读取配置文件的参数<br>判断request类别，根据类别进行差异化处理。handleSimpleCORS 处理过程，判断是否设置允许所有origin参数，判断是否符合httpMethods要求，判断此次request的origin（origin = request.getHeader(“Origin”)）是否在allowedOrigins（origin白名单）内。如果在，就设置response.addHeader(“Access-Control-Allow-Origin”, origin);这样也就实现了多域名支持。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/12/27/头条一面/" rel="next" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/02/03/Dubbo源码系列（一）SPI/" rel="prev" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CORS-定义"><span class="nav-number">1.</span> <span class="nav-text">CORS 定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单请求"><span class="nav-number">1.1.</span> <span class="nav-text">简单请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Nginx-配置支持Ajax跨域"><span class="nav-number">1.2.</span> <span class="nav-text">二、Nginx 配置支持Ajax跨域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、支持多域名配置的CORS-Filter"><span class="nav-number">1.3.</span> <span class="nav-text">三、支持多域名配置的CORS Filter</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.7.1</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

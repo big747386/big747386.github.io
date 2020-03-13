@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.7.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="MySQL的锁大致分为表锁,行锁和全局锁.  全局锁顾名思义,全局锁就是对整个数据库实例加锁,命令是Flush tables with read lock(FTWRL),当你需要让整个库处于只读状态的时候,然后其他线程的以下语句都会被阻塞:  数据更新语句(增删改) 数据定义语句(建表,修改表结构等) 更新类事务的提交    典型使用场景是做全库逻辑备份,就是把每个表select出来存成文本.当然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2019/12/19/面试系列(五)数据库的锁/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MySQL的锁大致分为表锁,行锁和全局锁.  全局锁顾名思义,全局锁就是对整个数据库实例加锁,命令是Flush tables with read lock(FTWRL),当你需要让整个库处于只读状态的时候,然后其他线程的以下语句都会被阻塞:  数据更新语句(增删改) 数据定义语句(建表,修改表结构等) 更新类事务的提交    典型使用场景是做全库逻辑备份,就是把每个表select出来存成文本.当然">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2019/12/19/面试系列(五)数据库的锁/image/面试五1.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/12/19/面试系列(五)数据库的锁/image/面试五2.jpg">
+<meta property="og:updated_time" content="2019-12-20T04:03:10.419Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="MySQL的锁大致分为表锁,行锁和全局锁.  全局锁顾名思义,全局锁就是对整个数据库实例加锁,命令是Flush tables with read lock(FTWRL),当你需要让整个库处于只读状态的时候,然后其他线程的以下语句都会被阻塞:  数据更新语句(增删改) 数据定义语句(建表,修改表结构等) 更新类事务的提交    典型使用场景是做全库逻辑备份,就是把每个表select出来存成文本.当然">
+<meta name="twitter:image" content="http://yoursite.com/2019/12/19/面试系列(五)数据库的锁/image/面试五1.jpg">
+  <link rel="canonical" href="http://yoursite.com/2019/12/19/面试系列(五)数据库的锁/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/面试系列(五)数据库的锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-12-19 15:13:22" itemprop="dateCreated datePublished" datetime="2019-12-19T15:13:22+08:00">2019-12-19</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-20 12:03:10" itemprop="dateModified" datetime="2019-12-20T12:03:10+08:00">2019-12-20</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>MySQL的锁大致分为表锁,行锁和全局锁. </p>
+<h2 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h2><p>顾名思义,全局锁就是对整个数据库实例加锁,命令是Flush tables with read lock(FTWRL),当你需要让整个库处于只读状态的时候,然后其他线程的以下语句都会被阻塞:</p>
+<ul>
+<li>数据更新语句(增删改)</li>
+<li>数据定义语句(建表,修改表结构等)</li>
+<li>更新类事务的提交  </li>
+</ul>
+<p>典型使用场景是做全库逻辑备份,就是把每个表select出来存成文本.<br>当然这一听就很有风险: </p>
+<ul>
+<li>如果你在主库上备份，那么在备份期间都不能执行更新，业务基本上就得停摆；</li>
+<li>如果你在从库上备份，那么备份期间从库不能执行主库同步过来的 binlog，会导致主从延迟。</li>
+</ul>
+<p>当然不加锁的话,备份的库很可能是不一致的.<br>当然还是有办法的,就是在可重复读隔离级别下开始一个事务.<br>官方提供了一个工具mysqldump,因为MVCC的支持,在备份期间可以正常更新的.<br>那么要FTWRL还有什么用呢,是为了一些不支持这个隔离级别的引擎使用的.<br>当然,set global readonly = true也可以去全库只读,为什么不用这个呢,原因有二:</p>
+<ul>
+<li>有的系统中,readonly的值会被用做其他逻辑,比如判断这个库是主库还是备库;</li>
+<li>在异常处理机制上有差异,执行完FTWRL在客户端异常中断后会释放全局锁,而设置为readonly会一直保持这个状态,从而使这个库不可写.  <h2 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h2>MySQL里表级别的锁有两种,一是表锁,二是元数据锁(meta data lock, MDL).<br>表锁的语法是lock tables .. read/write, unlock tables 释放锁.当然,lock tables不止限制了其他线程对表的读写,也限制了自己的操作对象.<br>举个例子,  如果在某个线程 A 中执行 lock tables t1 read, t2 write; 这个语句，则其他线程写 t1、读写 t2 的语句都会被阻塞。同时，线程 A 在执行 unlock tables 之前，也只能执行读 t1、读写 t2 的操作。连写 t1 都不允许，自然也不能访问其他表.<br>另一类表级锁是MDL,它不需要显式使用,在访问一个表的时候就会被加上,它的作用是保证读写的正确性,毕竟在读写数据的时候,突然更新了表结构,那是很诡异的.<br>因此,MySQL5.5的版本中加入了MDL,在对数据操作的时候加读锁,在修改表结构的时候加写锁.  </li>
+<li>读锁之间不互斥</li>
+<li>读写锁和写锁之间是互斥的 </li>
+</ul>
+<p>我们看个例子,以MySQL5.6为例,<br><img src="image/面试五1.jpg" alt="MDL栗子"><br>sessionA先启动,需要一个MDL读锁,然后sessionB也需要一个读锁,因为不互斥,所以可以执行,但是sessionC会被blocked,因为sessionA还持有读锁,sessionC需要MDL写锁,因此只能被阻塞,然后问题来了,之后的所有新的申请读锁的请求都会被sessionC阻塞,所以现在这张表完全不可读写了.<br>因此,事务中的MDL虽然在语句执行的时候才开始申请,但是在事务提交后才会释放.<br>所以这个问题的关键是长事务,事务不提交就会一直占着MDL锁,在information_schema中的innodb_trx表中,可以查到当前执行的事务,可以kill掉它.<br>但是如果这张表上请求很频繁,一直有请求进来怎么办呢.一个理想的机制是在alter table后面加上等待时间,如果在这个时间内能拿到MDL写锁最好,拿不到也没关系,放弃掉.<br>MariaDB 已经合并了 AliSQL 的这个功能,这个语法是:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tbl_name <span class="keyword">NOWAIT</span> <span class="keyword">add</span> <span class="keyword">column</span> ...</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tbl_name <span class="keyword">WAIT</span> N <span class="keyword">add</span> <span class="keyword">column</span> ...</span><br></pre></td></tr></table></figure></p>
+<h2 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h2><p>在 InnoDB 事务中，行锁是在需要的时候才加上的，但并不是不需要了就立刻释放，而是要等到事务结束时才释放。这个就是两阶段锁协议。<br>所以,如果在一个事务中需要锁多个行,尽量把更可能影响并发度的行放在后面锁.举个例子:<br>如果顾客A在电影院B买票,这个业务涉及几个操作:  </p>
+<ul>
+<li>从A账户扣钱</li>
+<li>将钱加到影院B的账户上</li>
+<li>记录订单  </li>
+</ul>
+<p>在这个交易中,需要update两条,insert一条,这三个语句在事务中的顺序应该怎么安排呢,如果有顾客C也在买票,那么冲突的就是语句二了,他是们都要修改影院B的余额,因此应该把第二个操作放在最后.  </p>
+<h2 id="死锁和死锁检测"><a href="#死锁和死锁检测" class="headerlink" title="死锁和死锁检测"></a>死锁和死锁检测</h2><p>在并发中资源出现循环引用依赖,线程等在等待别的线程释放资源,但是都被卡住,这就是死锁,在数据库中很常见.<br><img src="image/面试五2.jpg" alt="死锁"><br>现在事务AＡ在等待事务B释放id=2的行锁,事务B在等待事务A释放id=1的行锁,这就进入了死锁状态;有两种方法解决,</p>
+<ul>
+<li>进入等待,直到超时,超时时间可以通过参数innnnodb_lock_wait_timeout设置.  </li>
+<li>发起死锁检测,检测到死锁存在后,主动回滚其中某个事务,让其他事务得以执行,将参数 innodb_deadlock_detect 设置为 on，表示开启这个逻辑。  </li>
+</ul>
+<p>在InnoDB中,innodb_wait_timeout的默认值是50s,这对于业务来说是不可接受的,但是也不能设置成一个很小的值,这样可能只是简单的锁等待,但是被误伤了.<br>因此只能使用死锁检测了,但是死锁检测的时间是O(N),如果有大量线程同时更新同一行,每一个被锁的线程都会判断是不是自己的加入带来了死锁,会消耗大量CPU.  </p>
+<p>所以怎么解决这种由热点行更新带来的性能问题呢?<br>直接关闭死锁检测肯定是不行的,有一种思路是控制并发度,单纯在客户端做可能还不够,可以做中间件或者直接修改MySQL,让对相同行的更新在进入引擎之前排队,这样就不会有大量的死锁检测工作了.</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/12/19/面试系列（四）数据库索引/" rel="next" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/12/20/面试系列(六)TCPUDP/" rel="prev" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#全局锁"><span class="nav-number">1.</span> <span class="nav-text">全局锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表级锁"><span class="nav-number">2.</span> <span class="nav-text">表级锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行锁"><span class="nav-number">3.</span> <span class="nav-text">行锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁和死锁检测"><span class="nav-number">4.</span> <span class="nav-text">死锁和死锁检测</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.7.1</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
